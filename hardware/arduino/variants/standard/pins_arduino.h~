@@ -192,8 +192,6 @@ const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
 	PC,
 	PC,
 	PC,
-
-#ifdef USE_VIRTUAL_PINS
 	VPA,
 	VPA,
 	VPA,

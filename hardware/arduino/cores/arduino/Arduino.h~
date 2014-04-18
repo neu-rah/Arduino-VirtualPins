@@ -38,6 +38,8 @@ extern "C"{
 
 #ifdef USE_VIRTUAL_PINS
 	#include "virtual_pins.h"
+  //Virtual pins initialization
+  vpins_begin();
 #endif
 
 #define HIGH 0x1
