@@ -241,8 +241,11 @@ using avr hardware SPI
 			class portBranch;
 			extern portBranch* tree[branchLimit];
 			extern portBranch* debug_branch;
+			
 			class portBranch {
-			private:
+			friend void vpins_init();
+			protected:
+				static bool vpins_running;
 			public:
 				char index;
 				bool active;//branch mounted ok?
@@ -251,6 +254,7 @@ using avr hardware SPI
 				portBranch(char port, char sz);
 				//portBranch(char sz);
 				virtual ~portBranch();
+				inline static bool running() {return portBranch::vpins_running;}
 				inline bool hasPort(char port) {return port>=localPort && port<(localPort+size);}
 				inline int pin(int p) {return 20+((localPort-VPA)<<3)+p;}//NUM_DIGITAL_PINS not available here? damn weird compiling schema!
 				/*static inline int freePort() {

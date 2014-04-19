@@ -26,11 +26,11 @@
 	};
 
 	//I2C hardware port
-	class I2CShiftRegBranch:public portBranch {
+	class I2CBranch:public portBranch {
 	public:
 		TwoWire& Wire;
 		char serverId;//like i2c server or slave
-		I2CShiftRegBranch(TwoWire & wire,char id,char local,char sz=1);
+		I2CBranch(TwoWire & wire,char id,char local,char sz=1);
 		virtual void mode();
 		virtual void in();
 		virtual void out();
@@ -38,12 +38,12 @@
 	};
 
 	//virtual port over I2c (target can be any hardware or virtual port at server)
-	class I2CBranch:public I2CShiftRegBranch {
+	class I2CServerBranch:public I2CBranch {
 	private:
 		void dispatch(char op);
 	public:
 		char hostPort;//host port nr
-		I2CBranch(TwoWire & wire,char id,char local,char host,char sz=1);
+		I2CServerBranch(TwoWire & wire,char id,char local,char host,char sz=1);
 		virtual void mode();
 		virtual void in();
 		virtual void out();

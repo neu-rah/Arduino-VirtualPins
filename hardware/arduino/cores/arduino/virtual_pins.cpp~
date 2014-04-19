@@ -9,13 +9,13 @@ char vpins_data[VPINS_SZ];
 //char vpins_IO=VPIO_COMPAT;
 //void setVPinsIO(int mode) {vpins_IO=mode;}
 
-bool vpins_running=false;
+bool portBranch::vpins_running=false;
 
 void vpins_init() {
-	if (vpins_running) return;
+	if (portBranch::running()) return;
 	for(char n=0;n<VPINS_SZ;n++)
 		vpins_data[n]=0;
-	vpins_running=true;
+	portBranch::vpins_running=true;
 }
 
 #ifdef VPINS_OPTIMIZE_SPEED
@@ -69,8 +69,6 @@ portBranch::~portBranch() {
 	active=false;
 }
 
-int portBranch::pin(int p) {return NUM_DIGITAL_PINS+((localPort-VPA)<<3)+p;}
-
 char portBranch::getBranchId(char port) {
 	#ifdef VPINS_OPTIMIZE_SPEED
 		return port_to_branch[port];
@@ -90,7 +88,7 @@ void portBranch::io() {}//default branch type does nothing
 
 //glue functions calling C++ class methods from C --------------------------
 inline void _mode(char port) {
-	if (!vpins_running) return;
+	if (!portBranch::running()) return;
 	char branchId=portBranch::getBranchId(port);
 	//this check can be removed if you know what are you doing...
 	if (branchId==NOT_A_BRANCH || branchId<0 || branchId>=branchLimit) return;
@@ -98,7 +96,7 @@ inline void _mode(char port) {
 }
 
 inline void _in(char port) {
-	if (!vpins_running) return;
+	if (!portBranch::running()) return;
 	char branchId=portBranch::getBranchId(port);
 	//this check can be removed if you know what are you doing...
 	if (branchId==NOT_A_BRANCH || branchId<0 || branchId>=branchLimit) return;
@@ -106,7 +104,7 @@ inline void _in(char port) {
 }
 
 inline void _out(char port) {
-	if (!vpins_running) return;
+	if (!portBranch::running()) return;
 	char branchId=portBranch::getBranchId(port);
 	//this check can be removed if you know what are you doing...
 	if (branchId==NOT_A_BRANCH || branchId<0 || branchId>=branchLimit) return;
@@ -114,7 +112,7 @@ inline void _out(char port) {
 }
 
 inline void _io(char port) {
-	if (!vpins_running) return;
+	if (!portBranch::running()) return;
 	char branchId=portBranch::getBranchId(port);
 	//this check can be removed if you know what are you doing...
 	if (branchId==NOT_A_BRANCH || branchId<0 || branchId>=branchLimit) return;

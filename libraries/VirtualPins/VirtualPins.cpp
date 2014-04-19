@@ -28,10 +28,14 @@ void SPIBranch::io() {
 		//if the pin is in output mode, reading data will read the outputed data
 		//TODO: put here some macros replacing constants
 		//TODO: test this in compat mode
-		for(int p=localPort+size-14;p>=0;p--)
-			vpins_data[3*(size-p-1)+2]=
-				(SPI.transfer(vpins_data[3*p+1]) & ~vpins_data[3*(size-p-1)])
-				| (vpins_data[3*(size-p-1)+1] & vpins_data[3*(size-p-1)]);
+		for(int p=localPort+size-VPA-1;p>=0;p--) {
+			/*Serial.print(p,DEC);
+			Serial.print(", ");*/
+			vpins_data[PORTREGSZ*(size-p-1)+2]=
+				(SPI.transfer(vpins_data[PORTREGSZ*p+1]) & ~vpins_data[PORTREGSZ*(size-p-1)])
+				| (vpins_data[PORTREGSZ*(size-p-1)+1] & vpins_data[PORTREGSZ*(size-p-1)]);
+		}
+		//Serial.println("");
 		break;
 	case VPSPI_DUPLEX:
 		//separate inputs and outputs (still read all at once), only keeps data apart
@@ -39,23 +43,32 @@ void SPIBranch::io() {
 		// digitalWrite(20,x) will affect 1st data pin of first shiftout register
 		// digitalread(20) will get data from 1st input pin of first shiftin register
 	default:
-		for(int p=localPort+size-14;p>=0;p--) {//TODO: coul be size, but will be port #
-			vpins_data[3*(size-p-1)+2]=SPI.transfer(vpins_data[3*p+1]);//TODO: use port macros
+		int lastPort=localPort+size-VPA-1;
+		/*Serial.print("from last port: ");
+		Serial.println(lastPort,DEC);
+		Serial.print("to localPort: ");
+		Serial.println(lastPort-size+1,DEC);*/
+		for(int p=lastPort;p>lastPort-size;p--) {//TODO: coul be size, but will be port #
+			/*Serial.print(p,DEC);
+			Serial.print(", ");*/
+			vpins_data[PORTREGSZ*(size-p-1)+2]=SPI.transfer(vpins_data[PORTREGSZ*p+1]);//TODO: use port macros
 		}
+		//Serial.println("");
 		break;
 	}
 	pulse(latchPin);//write data
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-I2CShiftRegBranch::I2CShiftRegBranch(TwoWire & wire,char id,char local,char sz)
+I2CBranch::I2CBranch(TwoWire & wire,char id,char local,char sz)
 	:Wire(wire),serverId(id),portBranch(local,sz) {
 }
 
-void I2CShiftRegBranch::mode() {}//TODO: can we setup IO mode on i2c shift registers? google that!
-void I2CShiftRegBranch::in() {}//TODO: test i2c input shift registers...
+void I2CBranch::io() {in();out();}
+void I2CBranch::mode() {}//TODO: can we setup IO mode on i2c shift registers? google that!
+void I2CBranch::in() {}//TODO: test i2c input shift registers...
 
-void I2CShiftRegBranch::out() {
+void I2CBranch::out() {
   Wire.beginTransmission(serverId);
   for(int n=localPort;n<localPort+size;n++)
     while (Wire.write(*portOutputRegister(localPort))!=1);
@@ -63,16 +76,15 @@ void I2CShiftRegBranch::out() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-I2CBranch::I2CBranch(TwoWire & wire,char id,char local,char host,char sz):hostPort(host),I2CShiftRegBranch(wire,id,local,sz) {
+I2CServerBranch::I2CServerBranch(TwoWire & wire,char id,char local,char host,char sz):hostPort(host),I2CBranch(wire,id,local,sz) {
 	//TODO: wait for server to be ready
 	//TODO: need a timeout and an error status somewhere
 	/*do Wire.beginTransmission(id);
 	while(!Wire.endTransmission());*/
 }
 
-void I2CShiftRegBranch::io() {in();out();}
-void I2CBranch::mode() {dispatch(0b00);}
-void I2CBranch::in() {
+void I2CServerBranch::mode() {dispatch(0b00);}
+void I2CServerBranch::in() {
 	char op=0b10;
   Wire.beginTransmission(serverId);
   Wire.write((hostPort<<2)|op);//codify operation on lower 2 bits
@@ -80,9 +92,10 @@ void I2CBranch::in() {
   	*(portInputRegister(localPort))=Wire.read();
   Wire.endTransmission(serverId);
 }
-void I2CBranch::out() {dispatch(0b01);}
+void I2CServerBranch::out() {dispatch(0b01);}
 
-void I2CBranch::dispatch(char op) {
+//op is port data info (3 bytes) index, avr ports compatible
+void I2CServerBranch::dispatch(char op) {
 	Serial.println("Wire dispatch");
   Wire.beginTransmission(serverId);
   Wire.write((hostPort<<2)|op);//codify operation on lower 2 bits
