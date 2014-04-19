@@ -22,7 +22,6 @@
 int main(void)
 {
 	init();
-	vpins_init();//initialize port/pin maps
 
 #if defined(USBCON)
 	USBDevice.attach();

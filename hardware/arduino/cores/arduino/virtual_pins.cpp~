@@ -69,6 +69,8 @@ portBranch::~portBranch() {
 	active=false;
 }
 
+int portBranch::pin(int p) {return NUM_DIGITAL_PINS+((localPort-VPA)<<3)+p;}
+
 char portBranch::getBranchId(char port) {
 	#ifdef VPINS_OPTIMIZE_SPEED
 		return port_to_branch[port];

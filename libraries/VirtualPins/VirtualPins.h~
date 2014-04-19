@@ -2,7 +2,6 @@
 #define SPI_VPINS_PROTOCOL_DEF
 
 	#include <SPI.h>
-	#include <Wire.h>
 
 	#define VPSPI_COMPAT 0
 	#define VPSPI_DUPLEX	1

@@ -252,7 +252,7 @@ using avr hardware SPI
 				//portBranch(char sz);
 				virtual ~portBranch();
 				inline bool hasPort(char port) {return port>=localPort && port<(localPort+size);}
-				inline int pin(int p) {return 20+((localPort-VPA)<<3)+p;}//NUM_DIGITAL_PINS not available here? damn weird compiling schema!
+				inline int pin(int p) {return NUM_DIGITAL_PINS+((localPort-VPA)<<3)+p;}//NUM_DIGITAL_PINS not available here? damn weird compiling schema!
 				/*static inline int freePort() {
 					for(int i=0;i<ports_limit;i++) if (port_to_Branch[i]}*/
 				static char getBranchId(char port);
