@@ -3,13 +3,13 @@ Virtual pins library
   LiquidCrystal classic example  - "Hello World" using virtual pins
 */
 
-#define STCP 9//stcp or latch pin
 #include <SPI.h>// <---<< we will use this media
 #include <VPinsSPI.h>
 
 // include the library code:
 #include <LiquidCrystal.h>
 
+#define STCP 9//stcp or latch pin
 SPIBranch spi(SPI,STCP,VPA,2);//TODO: add version that finds a free port and make pin() fynctions the only methid to get a pin number
 
 // initialize the library with the numbers of the interface pins
