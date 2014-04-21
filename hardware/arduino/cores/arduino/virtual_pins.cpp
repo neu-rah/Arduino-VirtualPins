@@ -1,13 +1,6 @@
-#include "virtual_pins.h"
-#include "../../../../libraries/SPI/SPI.h"
-
+#include "Arduino.h"
+	
 char vpins_data[VPINS_SZ];
-//char vpins_latchPin=0;
-//char vpins_regsz=4;
-//char vpins_bytes=4*3;
-
-//char vpins_IO=VPIO_COMPAT;
-//void setVPinsIO(int mode) {vpins_IO=mode;}
 
 bool portBranch::vpins_running=false;
 

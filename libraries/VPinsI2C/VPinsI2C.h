@@ -1,7 +1,7 @@
 #ifndef I2C_VPINS_PROTOCOL_DEF
 #define I2C_VPINS_PROTOCOL_DEF
 
-	#include <virtual_pins.h>
+	#include <Arduino.h>
 	#include <Wire.h>
 
 	//I2C hardware port

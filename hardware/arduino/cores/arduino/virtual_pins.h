@@ -263,7 +263,7 @@ using avr hardware SPI
 				static portBranch& getBranch(char port);
 				//this functions kick data in/out of the virtual ports
 				//on SPI (and duplex protocols) io is always called
-				//on ither protocols we have advantage of calling either in or out
+				//on other protocols we have advantage of calling either in or out
 				//port mode is only sent out for network ports
 				//default branch type does nothing (ideal for representing reah hardware ports)
 				virtual void mode();
