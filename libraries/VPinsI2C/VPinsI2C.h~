@@ -23,7 +23,6 @@
 	public:
 		char hostPort;//host port nr
 		I2CServerBranch(TwoWire & wire,char id,char local,char host,char sz=1);
-		bool begin();
 		virtual void mode();
 		virtual void in();
 		virtual void out();

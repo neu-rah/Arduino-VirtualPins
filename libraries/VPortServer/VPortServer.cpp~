@@ -8,7 +8,7 @@ char vpserver_active_port=-1;
 //operation mode uses only 3 of 4 states
 //number of ports now 64, we can limit it to 32 and have extra bit (sort of negative port)
 void rcv(int numBytes) {
-	//Serial.println("rcv");
+	Serial.println("rcv");
 	char port=Wire.read();
 	char op=port&0b11;//OPeration can be setmode|output|input (00|01|10)
 	port>>=2;

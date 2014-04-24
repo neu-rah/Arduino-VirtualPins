@@ -29,6 +29,7 @@ I2CServerBranch::I2CServerBranch(TwoWire & wire,char id,char local,char host,cha
 }
 
 bool I2CServerBranch::begin() {
+	int cnt=10;
 	do Wire.beginTransmission(serverId);
 	while(!Wire.endTransmission());
 }

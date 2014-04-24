@@ -103,6 +103,7 @@ inline void _out(char port) {
 	char branchId=portBranch::getBranchId(port);
 	//this check can be removed if you know what are you doing...
 	if (branchId==NOT_A_BRANCH || branchId<0 || branchId>=branchLimit) return;
+    digitalWrite(8,!digitalRead(8));
 	tree[branchId]->out();
 }
 

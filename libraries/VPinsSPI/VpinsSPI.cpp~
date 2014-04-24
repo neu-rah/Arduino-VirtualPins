@@ -3,7 +3,7 @@
 #include "VPinsSPI.h"
 #include "../SPI/SPI.h"
 
-#define PORTREGSZ 3//why is this not defined! damn weird build!
+#define PORTREGSZ 3//why is this not defined!
 
 //give real pin for spi latch, virtual port number, and # of ports
 SPIBranch::SPIBranch(SPIClass &spi,char latch_pin,char port,char sz):SPI(spi),latchPin(latch_pin),portBranch(port,sz),ioMode(VPSPI_COMPAT) {
