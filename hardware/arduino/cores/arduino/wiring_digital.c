@@ -62,8 +62,9 @@ void pinMode(uint8_t pin, uint8_t mode)
 		SREG = oldSREG;
 	}
 	#ifdef USE_VIRTUAL_PINS
-		if (pin>=NUM_DIGITAL_PINS) //then its a virtual pin...
+		if (pin>=NUM_DIGITAL_PINS) {//then its a virtual pin...
 			vpins_mode(port);
+		}
 		//no need to update the output/pull-up because virtuals pins usually dont have
 		//TODO: when in compat mode do the pull-up update
 	#endif
@@ -169,8 +170,9 @@ void digitalWrite(uint8_t pin, uint8_t val)
 
 	SREG = oldSREG;
 	#ifdef USE_VIRTUAL_PINS
-		if (pin>=NUM_DIGITAL_PINS)//then its a virtual pin...
+		if (pin>=NUM_DIGITAL_PINS) {//then its a virtual pin...
 			vpins_out(port);
+		}
 	#endif
 }
 

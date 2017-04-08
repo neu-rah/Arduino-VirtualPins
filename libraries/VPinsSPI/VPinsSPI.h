@@ -1,6 +1,5 @@
 #ifndef SPI_VPINS_PROTOCOL_DEF
 #define SPI_VPINS_PROTOCOL_DEF
-
 	#include <virtual_pins.h>
 	#include <SPI.h>
 	

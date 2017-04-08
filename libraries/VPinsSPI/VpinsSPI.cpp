@@ -7,6 +7,7 @@
 
 //give real pin for spi latch, virtual port number, and # of ports
 SPIBranch::SPIBranch(SPIClass &spi,char latch_pin,char port,char sz):SPI(spi),latchPin(latch_pin),portBranch(port,sz),ioMode(VPSPI_COMPAT) {
+	Serial.print("SPIBranch");
 	pinMode(latchPin,OUTPUT);
 	on(latchPin);
 	//SPI.begin();
@@ -22,6 +23,7 @@ void SPIBranch::out() {io();}//call io because SPI bus is full-duplex
 
 //do input and output (SPI is a bidirectional bus)
 void SPIBranch::io() {
+	Serial.print("SPIBranch::io");
 	pulse(latchPin);//read data (will also show output data)
 	switch(ioMode) {
  	case VPSPI_COMPAT: {

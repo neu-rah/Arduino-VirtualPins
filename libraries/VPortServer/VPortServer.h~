@@ -1,8 +1,0 @@
-//#include "../VPinsSPI/VPinsSPI.h"
-
-class VPortServer {
-public:
-	VPortServer(TwoWire & wire);
-	void begin(uint8_t serverID);
-};
-

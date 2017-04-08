@@ -117,8 +117,8 @@ inline void _io(char port) {
 void vpins_mode(char port) {
 	_mode(port);
 }
-void vpins_in(char port) {_in(port);}
-void vpins_out(char port) {_out(port);}
-void vpins_io(char port) {_io(port);}
+void vpins_in(char port) {Serial.print("OK!");_in(port);}
+void vpins_out(char port) {Serial.print("OK!");_out(port);}
+void vpins_io(char port) {Serial.print("OK!");_io(port);}
 
 
